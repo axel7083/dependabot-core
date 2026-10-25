@@ -202,6 +202,46 @@ RSpec.describe Dependabot::Docker::FileFetcher do
     end
   end
 
+  context "with Podman Quadlet files" do
+    let(:quadlet_filenames) { %w(radarr.container radarr.image data.volume model.artifact) }
+    let(:quadlet_fixture) { fixture("github", "contents_quadlet.json") }
+
+    before do
+      stub_request(:get, url + "?ref=sha")
+        .with(headers: { "Authorization" => "token token" })
+        .to_return(
+          status: 200,
+          body: fixture("github", "contents_quadlet_repo.json"),
+          headers: { "content-type" => "application/json" }
+        )
+
+      quadlet_filenames.each do |fname|
+        stub_request(:get, File.join(url, "#{fname}?ref=sha"))
+          .with(headers: { "Authorization" => "token token" })
+          .to_return(
+            status: 200,
+            body: quadlet_fixture,
+            headers: { "content-type" => "application/json" }
+          )
+      end
+    end
+
+    it "fetches the units that reference an image or artifact" do
+      expect(file_fetcher_instance.files.count).to eq(quadlet_filenames.length)
+      expect(file_fetcher_instance.files.map(&:name))
+        .to match_array(quadlet_filenames)
+    end
+
+    context "when an invalid encoding is present" do
+      let(:quadlet_fixture) { fixture("github", "contents_image.json") }
+
+      it "raises a helpful error" do
+        expect { file_fetcher_instance.files }
+          .to raise_error(Dependabot::DependencyFileNotParseable)
+      end
+    end
+  end
+
   context "with a directory that doesn't exist" do
     let(:directory) { "/nonexistent" }
 

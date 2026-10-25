@@ -19,6 +19,16 @@ Docker support for [`dependabot-core`][core-repo].
 
 [core-repo]: https://github.com/dependabot/dependabot-core
 
+### Supported files
+
+The `docker` ecosystem updates image references in:
+
+- `Dockerfile` and `Containerfile` (`FROM` instructions)
+- Kubernetes manifests (`image:` values) and Helm values files (`image.repository` plus `image.tag`)
+- [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) units:
+  `Image=` in `.container`, `.image` and `.volume` files, and `Artifact=` in `.artifact` files.
+  Values that name another unit (for example `Image=app.image`) carry no tag and are skipped.
+
 ### Supported tag schemas
 
 Dependabot supports updates for Docker tags that use semver versioning, dates, and build numbers.

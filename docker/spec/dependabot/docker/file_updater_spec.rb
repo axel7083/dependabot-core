@@ -1911,4 +1911,186 @@ RSpec.describe Dependabot::Docker::FileUpdater do
       end
     end
   end
+
+  describe "#updated_dependency_files" do
+    subject(:updated_files) { quadlet_updater.updated_dependency_files }
+
+    let(:quadlet_updater) do
+      described_class.new(
+        dependency_files: quadlet_files,
+        dependencies: [quadlet_dependency],
+        credentials: credentials
+      )
+    end
+    let(:quadlet_files) { [quadlet_file] }
+    let(:quadlet_fixture_name) { "radarr.container" }
+    let(:quadlet_file) do
+      Dependabot::DependencyFile.new(
+        content: fixture("podman", "quadlets", quadlet_fixture_name),
+        name: quadlet_fixture_name
+      )
+    end
+    let(:quadlet_dependency) do
+      Dependabot::Dependency.new(
+        name: "linuxserver/radarr",
+        version: "5.26.0",
+        previous_version: "5.25.0",
+        requirements: [{
+          requirement: nil,
+          groups: [],
+          file: quadlet_fixture_name,
+          source: { registry: "lscr.io", tag: "5.26.0" }
+        }],
+        previous_requirements: [{
+          requirement: nil,
+          groups: [],
+          file: quadlet_fixture_name,
+          source: { registry: "lscr.io", tag: "5.25.0" }
+        }],
+        package_manager: "docker"
+      )
+    end
+
+    its(:length) { is_expected.to eq(1) }
+
+    describe "the updated container unit" do
+      subject(:updated_unit) { updated_files.find { |f| f.name == "radarr.container" } }
+
+      its(:content) { is_expected.to include "Image=lscr.io/linuxserver/radarr:5.26.0\n" }
+      its(:content) { is_expected.to include "ContainerName=radarr\n" }
+      its(:content) { is_expected.to include "[Install]\nWantedBy=default.target\n" }
+    end
+
+    context "when the key has whitespace around it" do
+      let(:quadlet_fixture_name) { "whitespace.container" }
+      let(:quadlet_dependency) do
+        Dependabot::Dependency.new(
+          name: "nginx",
+          version: "1.14.3",
+          previous_version: "1.14.2",
+          requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: { tag: "1.14.3" }
+          }],
+          previous_requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: { tag: "1.14.2" }
+          }],
+          package_manager: "docker"
+        )
+      end
+
+      describe "the updated container unit" do
+        subject(:updated_unit) { updated_files.find { |f| f.name == "whitespace.container" } }
+
+        its(:content) { is_expected.to include "Image = docker.io/nginx:1.14.3\n" }
+        its(:content) { is_expected.to include "# Image=nginx:1.14.1\n; Image=nginx:1.14.1\n" }
+      end
+    end
+
+    context "when the dependency has a tag and a digest" do
+      let(:quadlet_fixture_name) { "digest.container" }
+      let(:quadlet_dependency) do
+        Dependabot::Dependency.new(
+          name: "ubuntu",
+          version: "17.10",
+          previous_version: "12.04.5",
+          requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: {
+              tag: "17.10",
+              digest: "3ea1ca1aa8483a38081750953ad75046e6cc9f6b86" \
+                      "ca97eba880ebf600d68608"
+            }
+          }],
+          previous_requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: {
+              tag: "12.04.5",
+              digest: "18305429afa14ea462f810146ba44d4363ae76e4c8" \
+                      "dfc38288cf73aa07485005"
+            }
+          }],
+          package_manager: "docker"
+        )
+      end
+
+      describe "the updated container unit" do
+        subject(:updated_unit) { updated_files.find { |f| f.name == "digest.container" } }
+
+        its(:content) do
+          is_expected.to include "Image=ubuntu:17.10@sha256:3ea1ca1aa8483a38081750953ad75046e6cc9f6b86" \
+                                 "ca97eba880ebf600d68608\n"
+        end
+      end
+    end
+
+    context "with an artifact unit" do
+      let(:quadlet_fixture_name) { "model.artifact" }
+      let(:quadlet_dependency) do
+        Dependabot::Dependency.new(
+          name: "example/model",
+          version: "2.1.0",
+          previous_version: "2.0.0",
+          requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: { registry: "quay.io", tag: "2.1.0" }
+          }],
+          previous_requirements: [{
+            requirement: nil,
+            groups: [],
+            file: quadlet_fixture_name,
+            source: { registry: "quay.io", tag: "2.0.0" }
+          }],
+          package_manager: "docker"
+        )
+      end
+
+      describe "the updated artifact unit" do
+        subject(:updated_unit) { updated_files.find { |f| f.name == "model.artifact" } }
+
+        its(:content) { is_expected.to eq "[Artifact]\nArtifact=quay.io/example/model:2.1.0\n" }
+      end
+    end
+
+    context "when the image is declared in a container and an image unit" do
+      let(:image_unit) do
+        Dependabot::DependencyFile.new(
+          content: fixture("podman", "quadlets", "radarr.image"),
+          name: "radarr.image"
+        )
+      end
+      let(:quadlet_files) { [quadlet_file, image_unit] }
+      let(:quadlet_dependency) do
+        Dependabot::Dependency.new(
+          name: "linuxserver/radarr",
+          version: "5.26.0",
+          previous_version: "5.25.0",
+          requirements: %w(radarr.container radarr.image).map do |file|
+            { requirement: nil, groups: [], file: file, source: { registry: "lscr.io", tag: "5.26.0" } }
+          end,
+          previous_requirements: %w(radarr.container radarr.image).map do |file|
+            { requirement: nil, groups: [], file: file, source: { registry: "lscr.io", tag: "5.25.0" } }
+          end,
+          package_manager: "docker"
+        )
+      end
+
+      its(:length) { is_expected.to eq(2) }
+
+      it "updates both units" do
+        expect(updated_files.map(&:content)).to all(include("Image=lscr.io/linuxserver/radarr:5.26.0\n"))
+      end
+    end
+  end
 end

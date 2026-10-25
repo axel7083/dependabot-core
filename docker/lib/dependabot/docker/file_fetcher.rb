@@ -13,7 +13,7 @@ module Dependabot
       # Podman Quadlet units that reference an OCI image or artifact.
       # See https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
       QUADLET_REGEXP = /\.(?:container|image|volume|artifact)$/
-      FILENAME_REGEXP = Regexp.union(DOCKER_REGEXP, QUADLET_REGEXP)
+      FILENAME_REGEXP = T.let(Regexp.union(DOCKER_REGEXP, QUADLET_REGEXP), Regexp)
 
       sig { override.returns(Regexp) }
       def self.filename_regex

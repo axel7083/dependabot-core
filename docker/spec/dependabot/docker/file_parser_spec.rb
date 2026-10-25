@@ -1430,4 +1430,106 @@ RSpec.describe Dependabot::Docker::FileParser do
       end
     end
   end
+
+  describe "Quadlet parse" do
+    subject(:dependencies) { quadlet_parser.parse }
+
+    let(:quadlet_parser) { described_class.new(dependency_files: quadlet_files, source: source) }
+    let(:quadlet_fixture_name) { "radarr.container" }
+    let(:quadlet_file) do
+      Dependabot::DependencyFile.new(
+        name: quadlet_fixture_name,
+        content: fixture("podman", "quadlets", quadlet_fixture_name)
+      )
+    end
+    let(:quadlet_files) { [quadlet_file] }
+
+    its(:length) { is_expected.to eq(1) }
+
+    describe "the first dependency" do
+      subject(:dependency) { dependencies.first }
+
+      let(:expected_requirements) do
+        [{
+          requirement: nil,
+          groups: [],
+          file: "radarr.container",
+          source: { registry: "lscr.io", tag: "5.25.0" }
+        }]
+      end
+
+      it "has the right details" do
+        expect(dependency).to be_a(Dependabot::Dependency)
+        expect(dependency.name).to eq("linuxserver/radarr")
+        expect(dependency.version).to eq("5.25.0")
+        expect(dependency.requirements).to eq(expected_requirements)
+      end
+    end
+
+    context "with a tag and digest" do
+      subject(:dependency) { dependencies.first }
+
+      let(:quadlet_fixture_name) { "digest.container" }
+
+      it "has the right details" do
+        expect(dependency.name).to eq("ubuntu")
+        expect(dependency.version).to eq("12.04.5")
+        expect(dependency.requirements).to eq(
+          [{
+            requirement: nil,
+            groups: [],
+            file: "digest.container",
+            source: {
+              tag: "12.04.5",
+              digest: "18305429afa14ea462f810146ba44d4363ae76e4c8dfc38288cf73aa07485005"
+            }
+          }]
+        )
+      end
+    end
+
+    context "with whitespace around the key and commented-out images" do
+      let(:quadlet_fixture_name) { "whitespace.container" }
+
+      its(:length) { is_expected.to eq(1) }
+
+      it "parses the active Image key and drops the docker.io registry" do
+        dependency = dependencies.first
+        expect(dependency&.name).to eq("nginx")
+        expect(dependency&.version).to eq("1.14.2")
+        expect(dependency&.requirements).to eq(
+          [{
+            requirement: nil,
+            groups: [],
+            file: "whitespace.container",
+            source: { tag: "1.14.2" }
+          }]
+        )
+      end
+    end
+
+    context "when the image is another Quadlet unit" do
+      let(:quadlet_fixture_name) { "unit_reference.container" }
+
+      its(:length) { is_expected.to eq(0) }
+    end
+
+    context "with image, volume and artifact units" do
+      let(:quadlet_files) do
+        %w(radarr.image data.volume model.artifact).map do |name|
+          Dependabot::DependencyFile.new(name: name, content: fixture("podman", "quadlets", name))
+        end
+      end
+
+      it "parses the image reference of each unit" do
+        expect(dependencies.map { |dep| [dep.name, dep.version, dep.requirements.first&.fetch(:file)] }).to eq(
+          [
+            ["linuxserver/radarr", "5.25.0", "radarr.image"],
+            ["example/data", "1.2.3", "data.volume"],
+            ["example/model", "2.0.0", "model.artifact"]
+          ]
+        )
+      end
+    end
+  end
 end
