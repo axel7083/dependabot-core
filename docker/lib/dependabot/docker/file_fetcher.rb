@@ -10,20 +10,24 @@ module Dependabot
       extend T::Sig
 
       DOCKER_REGEXP = /dockerfile|containerfile/i
+      # Podman Quadlet units that reference an OCI image or artifact.
+      # See https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+      QUADLET_REGEXP = /\.(?:container|image|volume|artifact)$/
+      FILENAME_REGEXP = Regexp.union(DOCKER_REGEXP, QUADLET_REGEXP)
 
       sig { override.returns(Regexp) }
       def self.filename_regex
-        DOCKER_REGEXP
+        FILENAME_REGEXP
       end
 
       sig { override.returns(String) }
       def self.required_files_message
-        "Repo must contain a Dockerfile, Containerfile, or Kubernetes YAML files."
+        "Repo must contain a Dockerfile, Containerfile, Podman Quadlet, or Kubernetes YAML files."
       end
 
       sig { override.params(filenames: T::Array[String]).returns(T::Boolean) }
       def self.required_files_in?(filenames)
-        filenames.any? { |f| f.match?(DOCKER_REGEXP) } or
+        filenames.any? { |f| f.match?(FILENAME_REGEXP) } or
           filenames.any? { |f| f.match?(YAML_REGEXP) }
       end
 

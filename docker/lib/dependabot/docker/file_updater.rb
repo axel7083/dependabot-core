@@ -13,6 +13,8 @@ module Dependabot
 
       YAML_REGEXP = /^[^\.].*\.ya?ml$/i
       FROM_REGEX = /FROM(\s+--platform\=\S+)?/i
+      # Quadlet keys are case-sensitive; whitespace around "=" is ignored by the unit file parser.
+      QUADLET_IMAGE_KEY = /(?:Image|Artifact)\s*=/
 
       sig { override.returns(String) }
       def file_type
@@ -27,6 +29,11 @@ module Dependabot
       sig { override.returns(Regexp) }
       def container_image_regex
         %r{^#{FROM_REGEX}\s+(docker\.io/)?}o
+      end
+
+      sig { override.params(escaped_declaration: String).returns(Regexp) }
+      def build_old_declaration_regex(escaped_declaration)
+        %r{^(?:#{FROM_REGEX}\s+|\s*#{QUADLET_IMAGE_KEY}\s*)(docker\.io/)?#{escaped_declaration}(?=\s|$)}
       end
     end
   end

@@ -1,0 +1,16 @@
+[Unit]
+Description=Radarr
+After=network-online.target
+
+[Container]
+Image=lscr.io/linuxserver/radarr:5.25.0
+ContainerName=radarr
+AutoUpdate=registry
+PublishPort=7878:7878
+Volume=radarr-config:/config
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

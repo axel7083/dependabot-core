@@ -1,0 +1,18 @@
+{
+  "name": "radarr.container",
+  "path": "radarr.container",
+  "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+  "size": 260,
+  "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.container?ref=master",
+  "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.container",
+  "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+  "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.container",
+  "type": "file",
+  "content": "W1VuaXRdCkRlc2NyaXB0aW9uPVJhZGFycgpBZnRlcj1uZXR3b3JrLW9ubGluZS50YXJnZXQKCltD\nb250YWluZXJdCkltYWdlPWxzY3IuaW8vbGludXhzZXJ2ZXIvcmFkYXJyOjUuMjUuMApDb250YWlu\nZXJOYW1lPXJhZGFycgpBdXRvVXBkYXRlPXJlZ2lzdHJ5ClB1Ymxpc2hQb3J0PTc4Nzg6Nzg3OApW\nb2x1bWU9cmFkYXJyLWNvbmZpZzovY29uZmlnCgpbU2VydmljZV0KUmVzdGFydD1hbHdheXMKCltJ\nbnN0YWxsXQpXYW50ZWRCeT1kZWZhdWx0LnRhcmdldAo=\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.container?ref=master",
+    "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.container"
+  }
+}

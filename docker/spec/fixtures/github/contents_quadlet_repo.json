@@ -1,0 +1,146 @@
+[
+  {
+    "name": "README.md",
+    "path": "README.md",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/README.md?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/README.md",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/README.md",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/README.md?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/README.md"
+    }
+  },
+  {
+    "name": "radarr.container",
+    "path": "radarr.container",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.container?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.container",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.container",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.container?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.container"
+    }
+  },
+  {
+    "name": "radarr.image",
+    "path": "radarr.image",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.image?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.image",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.image",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.image?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.image"
+    }
+  },
+  {
+    "name": "radarr.build",
+    "path": "radarr.build",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.build?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.build",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.build",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.build?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.build"
+    }
+  },
+  {
+    "name": "radarr.pod",
+    "path": "radarr.pod",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.pod?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.pod",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.pod",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.pod?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.pod"
+    }
+  },
+  {
+    "name": "radarr.kube",
+    "path": "radarr.kube",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.kube?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.kube",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.kube",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.kube?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.kube"
+    }
+  },
+  {
+    "name": "radarr.network",
+    "path": "radarr.network",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.network?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/radarr.network",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/radarr.network",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/radarr.network?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/radarr.network"
+    }
+  },
+  {
+    "name": "data.volume",
+    "path": "data.volume",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/data.volume?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/data.volume",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/data.volume",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/data.volume?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/data.volume"
+    }
+  },
+  {
+    "name": "model.artifact",
+    "path": "model.artifact",
+    "sha": "311f9743315183cc6751313cb251cfeb3de45c1a",
+    "size": 285,
+    "url": "https://api.github.com/repos/dependabot/dependabot-core/contents/model.artifact?ref=master",
+    "html_url": "https://github.com/dependabot/dependabot-core/blob/main/model.artifact",
+    "git_url": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+    "download_url": "https://raw.githubusercontent.com/dependabot/dependabot-core/main/model.artifact",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dependabot/dependabot-core/contents/model.artifact?ref=master",
+      "git": "https://api.github.com/repos/dependabot/dependabot-core/git/blobs/311f9743315183cc6751313cb251cfeb3de45c1a",
+      "html": "https://github.com/dependabot/dependabot-core/blob/main/model.artifact"
+    }
+  }
+]

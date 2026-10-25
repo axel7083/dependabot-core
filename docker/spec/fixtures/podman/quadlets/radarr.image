@@ -1,0 +1,6 @@
+[Unit]
+Description=Radarr image
+
+[Image]
+Image=lscr.io/linuxserver/radarr:5.25.0
+AllTags=false

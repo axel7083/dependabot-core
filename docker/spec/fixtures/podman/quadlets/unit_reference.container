@@ -1,0 +1,3 @@
+[Container]
+Image=radarr.image
+Mount=type=image,source=radarr-tools.image,destination=/tools

@@ -10,6 +10,9 @@ module Dependabot
       extend T::Sig
 
       YAML_REGEXP = /^[^\.].*\.ya?ml$/i
+      QUADLET_REGEXP = /\.(?:container|image|volume|artifact)$/
+      # Quadlet keys are case-sensitive; whitespace around "=" is ignored by the unit file parser.
+      QUADLET_IMAGE_LINE = /^\s*(?:Image|Artifact)\s*=\s*(?<reference>\S+)/
       FROM = /FROM/i
       PLATFORM = /--platform\=(?<platform>\S+)/
       TAG_NO_PREFIX = /(?<tag>[\w][\w.-]{0,127})/
@@ -52,6 +55,10 @@ module Dependabot
           end
         end
 
+        quadlet_files.each do |file|
+          dependency_set += quadlet_file_dependencies(file)
+        end
+
         manifest_files.each do |file|
           dependency_set += workfile_file_dependencies(file)
         rescue Dependabot::DependencyFileNotParseable => e
@@ -75,13 +82,35 @@ module Dependabot
 
       sig { returns(T::Array[Dependabot::DependencyFile]) }
       def dockerfiles
-        # The Docker file fetcher fetches Dockerfiles and yaml files. Reject yaml files.
-        dependency_files.reject { |f| f.type == "file" && f.name.match?(YAML_REGEXP) }
+        # The Docker file fetcher fetches Dockerfiles, Quadlet units and yaml files. Reject the latter two.
+        dependency_files.reject do |f|
+          f.type == "file" && (f.name.match?(YAML_REGEXP) || f.name.match?(QUADLET_REGEXP))
+        end
+      end
+
+      sig { returns(T::Array[Dependabot::DependencyFile]) }
+      def quadlet_files
+        dependency_files.select { |f| f.type == "file" && f.name.match?(QUADLET_REGEXP) }
       end
 
       sig { returns(T::Array[Dependabot::DependencyFile]) }
       def manifest_files
         dependency_files.select { |f| f.type == "file" && f.name.match?(YAML_REGEXP) }
+      end
+
+      sig { params(file: Dependabot::DependencyFile).returns(DependencySet) }
+      def quadlet_file_dependencies(file)
+        dependency_set = DependencySet.new
+
+        T.must(file.content).each_line do |line|
+          reference = QUADLET_IMAGE_LINE.match(line)&.[](:reference)
+          next unless reference
+
+          dependency = dependency_from_reference(file, reference)
+          dependency_set << dependency if dependency
+        end
+
+        dependency_set
       end
 
       sig { params(file: Dependabot::DependencyFile).returns(DependencySet) }
@@ -94,22 +123,30 @@ module Dependabot
           images = deep_fetch_images(json).uniq
 
           images.each do |string|
-            # TODO: Support Docker references and path references
-            details = string.match(IMAGE_SPEC)&.named_captures
-            next if details.nil?
-
-            details["registry"] = nil if details["registry"] == "docker.io"
-
-            version = version_from(details)
-            next unless version
-
-            dependency_set << build_dependency(file, details, version)
+            dependency = dependency_from_reference(file, string)
+            dependency_set << dependency if dependency
           end
         end
 
         dependency_set
       rescue Psych::SyntaxError, Psych::DisallowedClass, Psych::BadAlias => e
         raise Dependabot::DependencyFileNotParseable.new(file.path, e.message)
+      end
+
+      sig do
+        params(file: Dependabot::DependencyFile, reference: String).returns(T.nilable(Dependabot::Dependency))
+      end
+      def dependency_from_reference(file, reference)
+        # TODO: Support Docker references and path references
+        details = reference.match(IMAGE_SPEC)&.named_captures
+        return if details.nil?
+
+        details["registry"] = nil if details["registry"] == "docker.io"
+
+        version = version_from(details)
+        return unless version
+
+        build_dependency(file, details, version)
       end
 
       sig { params(json_obj: T.anything).returns(T::Array[String]) }

@@ -1,0 +1,5 @@
+[Container]
+# Image=nginx:1.14.1
+; Image=nginx:1.14.1
+Image = docker.io/nginx:1.14.2
+ContainerName=nginx
